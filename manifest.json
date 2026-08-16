@@ -1,0 +1,91 @@
+{
+  "created": "2026-08-15T18:19:21.695122",
+  "updated": "2026-08-15T18:53:56.397002",
+  "data_file": "/tmp/suricata_alerts_corpus.csv",
+  "data_hash": "63a479d6aef71ce87fcaa359b3ffa73a9a14956f45f70a6103cdd995535e67ad",
+  "n_rows_original": 59579,
+  "n_rows_used": 59579,
+  "text_col": "text",
+  "embedding_method": "cache",
+  "engine": "lite",
+  "build_params": {
+    "seed": 42,
+    "sample": null,
+    "layers": 3,
+    "embedder": "auto",
+    "umap_neighbors": 15,
+    "umap_min_dist": 0.1,
+    "cluster_ks": "12,48,144"
+  },
+  "cache_keys": {
+    "embeddings": "59b55e9358096376",
+    "layout": "3d44b484c3f99f3c",
+    "clusters": "1a4f330cc35617e5"
+  },
+  "lib_versions": {
+    "python": "3.10.12",
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "sklearn": "not-installed",
+    "umap": "not-installed",
+    "hdbscan": "not-installed",
+    "datamapplot": "not-installed"
+  },
+  "build_seconds": 5.0,
+  "render_params": {
+    "mode": "custom",
+    "title": "Suricata IDS/IPS Alerts",
+    "darkmode": true,
+    "hover_cols": "signature,category,severity,src_ip,dest_ip,dest_port,app_proto,count,timestamp",
+    "color_col": "source",
+    "url_col": null,
+    "histogram_col": null,
+    "sidecar": false,
+    "labels_file": "/tmp/labels.json",
+    "record_cols": "signature,signature_id,category,severity,src_ip,src_port,dest_ip,dest_port,app_proto,hostname,uri,count,timestamp,source",
+    "palette": "/tmp/palette.json",
+    "template": "/tmp/work/dmb/assets/custom_template.html"
+  },
+  "outputs": {
+    "html": "/tmp/suricata_alert_datamap_2026-08-12.html",
+    "html_mb": 8.9,
+    "preview_png": "/tmp/suricata_alert_datamap_2026-08-12_preview.png"
+  },
+  "render_seconds": 16.4,
+  "viewer_template_source": "/sessions/happy-clever-brown/mnt/Suricata - Datamap/suricata_datamap_template.html",
+  "pipeline_patched": true,
+  "corpus": {
+    "rows": 59579,
+    "raw_alerts_represented": 496578,
+    "unique_texts": 58787,
+    "unique_signatures": 293,
+    "uri_nonce_normalized": true,
+    "per_source": {
+      "honeypot-2018": {
+        "alerts": 254,
+        "unique_composites": 150,
+        "unique_signatures": 43,
+        "rows_kept": 150
+      },
+      "first-org-2015": {
+        "alerts": 7750,
+        "unique_composites": 4429,
+        "unique_signatures": 135,
+        "rows_kept": 4429
+      },
+      "wrccdc-2017": {
+        "alerts": 755711,
+        "unique_composites": 120749,
+        "unique_signatures": 161,
+        "rows_kept": 27500
+      },
+      "wrccdc-2018": {
+        "alerts": 1052233,
+        "unique_composites": 89068,
+        "unique_signatures": 206,
+        "rows_kept": 27500
+      }
+    }
+  },
+  "source_dataset": "https://github.com/FrankHassanabad/suricata-sample-data/releases/tag/v4.0.0"
+}
