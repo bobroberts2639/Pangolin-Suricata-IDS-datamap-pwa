@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Suricata IDS/IPS Alert Datamap</title>
+<meta name="description" content="Interactive map of 59,579 deduplicated Suricata IDS/IPS alerts from four packet captures, with hierarchical cluster labels and per-alert rule lookups.">
+<meta name="theme-color" content="#10101a">
+<link rel="icon" type="image/png" sizes="192x192" href="pwa/icons/icon-192.png">
+<link rel="apple-touch-icon" href="pwa/icons/icon-180.png">
+<!--
+  Landing page for the folder root.
+
+  This is deliberately NOT the map itself. The map exists in two forms with different
+  requirements, and sending people to the wrong one is the main way this gets confusing:
+
+    suricata_alert_datamap_2026-08-12.html  - one 8.5 MB file, opens from disk, no server
+    pwa/index.html                          - installable app, but needs HTTP(S)
+
+  So the root gives you a choice and tells you which is which. Works from file:// and
+  from a web host; every link is relative.
+-->
+<style>
+  :root{
+    --bg:#10101a; --fg:#e8e8f0; --muted:#99a; --panel:#161624; --line:#2a2a3d;
+    --accent:#7f9cff; --c17:#4cc9f0; --c18:#b388ff; --cfirst:#ffd166; --choney:#ff2e63;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--fg);
+    font:15px/1.65 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  a{color:var(--accent)}
+  .wrap{max-width:1000px;margin:0 auto;padding:48px 22px 72px}
+  header h1{margin:0 0 6px;font-size:30px;letter-spacing:.2px}
+  header p.sub{margin:0;color:var(--muted);font-size:15px}
+  .stats{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 30px;padding:0;list-style:none}
+  .stats li{background:var(--panel);border:1px solid var(--line);border-radius:9px;
+    padding:9px 13px;font-size:13px}
+  .stats b{font-size:16px;font-variant-numeric:tabular-nums;display:block}
+  .stats span{color:var(--muted)}
+  .hero{display:block;margin:0 0 34px;border:1px solid var(--line);border-radius:12px;
+    overflow:hidden;background:#0b0b12;text-decoration:none}
+  .hero img{display:block;width:100%;height:auto}
+  .hero .cap{padding:11px 15px;font-size:13px;color:var(--muted);
+    border-top:1px solid var(--line)}
+  .hero:hover .cap{color:var(--fg)}
+  h2{font-size:13px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);
+    margin:34px 0 14px;font-weight:700}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:17px 18px}
+  .card h3{margin:0 0 4px;font-size:16px}
+  .card h3 a{text-decoration:none}
+  .card h3 a:hover{text-decoration:underline}
+  .card .meta{color:var(--muted);font-size:12px;margin-bottom:9px;
+    font-variant-numeric:tabular-nums}
+  .card p{margin:0;font-size:13.5px;color:#c9c9d8}
+  .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;
+    border:1px solid currentColor;margin-left:7px;vertical-align:2px}
+  .tag.ok{color:#5ddc9a} .tag.warn{color:var(--cfirst)}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;margin:12px 0 0;padding:0;list-style:none;
+    font-size:13px;color:#c9c9d8}
+  .legend li{display:flex;align-items:center;gap:7px}
+  .sw{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
+  .note{background:#1a1526;border:1px solid #3a2f52;border-radius:10px;padding:13px 16px;
+    font-size:13.5px;margin-top:16px;color:#d6d0e6}
+  code{background:#0000004d;border:1px solid var(--line);border-radius:5px;padding:1px 6px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:6px}
+  th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;
+    letter-spacing:.5px}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);
+    white-space:nowrap}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);
+    color:var(--muted);font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Suricata IDS/IPS Alert Datamap</h1>
+    <p class="sub">59,579 deduplicated alerts &middot; 496,578 raw &middot; four packet
+      captures, 2015&ndash;2018</p>
+  </header>
+
+  <ul class="stats">
+    <li><b>59,579</b><span>points</span></li>
+    <li><b>12 / 48 / 144</b><span>clusters by zoom</span></li>
+    <li><b>293</b><span>distinct signatures</span></li>
+    <li><b>294</b><span>ET rules linked</span></li>
+    <li><b>4</b><span>captures</span></li>
+  </ul>
+
+  <a class="hero" href="suricata_alert_datamap_2026-08-12.html">
+    <img src="suricata_alert_datamap_2026-08-12_preview.png"
+         alt="Preview of the datamap: labelled clusters of Suricata alerts on a dark field">
+    <div class="cap">Open the interactive map &rarr;</div>
+  </a>
+
+  <h2>Open the map</h2>
+  <div class="cards">
+
+    <div class="card">
+      <h3><a href="suricata_alert_datamap_2026-08-12.html">Standalone HTML</a>
+        <span class="tag ok">no server</span></h3>
+      <div class="meta">8.5 MB &middot; single file</div>
+      <p>Everything inlined. Opens straight from disk, works offline, nothing to install.
+        Use this one if you just want to look at the map, or need to send it to someone.</p>
+    </div>
+
+    <div class="card">
+      <h3><a href="pwa/index.html">Web app (PWA)</a>
+        <span class="tag warn">needs a server</span></h3>
+      <div class="meta">27 KB shell + 7.8 MB data (1.29 MB gzipped)</div>
+      <p>Installable, works offline once loaded, and only re-downloads what changed.
+        Must be served over HTTP(S) &mdash; opening it from disk blocks the data fetch.
+        See below.</p>
+    </div>
+
+    <div class="card">
+      <h3><a href="suricata_datamap_build.ipynb">Build notebook</a></h3>
+      <div class="meta">24 cells &middot; full pipeline</div>
+      <p>Rebuilds everything from the raw <code>eve.json</code> captures: parsing, dedup,
+        layout, labels, render, PWA. Read the limitations section before changing
+        anything.</p>
+    </div>
+
+    <div class="card">
+      <h3><a href="README.md">README</a></h3>
+      <div class="meta">hosting &amp; deploy notes</div>
+      <p>GitHub Pages setup, static-host requirements, how to read the map, and what each
+        file in this folder is for.</p>
+    </div>
+
+  </div>
+
+  <div class="note">
+    <b>Running the PWA locally.</b> The web app fetches its data, which
+    <code>file://</code> blocks, so it needs a server:
+    <code>cd pwa &amp;&amp; python3 -m http.server 8000</code> then open
+    <code>http://localhost:8000</code>. Hosted, it just works &mdash; the included
+    GitHub Actions workflow publishes <code>pwa/</code> to Pages. If you only want to
+    look at the map, use the standalone HTML above instead.
+  </div>
+
+  <h2>What you're looking at</h2>
+  <p style="margin:0;font-size:14px;color:#c9c9d8">
+    Each point is one distinct alert &mdash; a unique combination of signature, category,
+    protocol, target host, URI and destination port. Position comes from the semantic
+    similarity of that text, so related attacks land together. Zooming reveals finer label
+    layers. Clicking a point opens its details and a link to the Emerging Threats rule
+    page for that signature.
+  </p>
+  <ul class="legend">
+    <li><span class="sw" style="background:var(--c17)"></span> wrccdc-2017 &mdash; 27,500</li>
+    <li><span class="sw" style="background:var(--c18)"></span> wrccdc-2018 &mdash; 27,500</li>
+    <li><span class="sw" style="background:var(--cfirst)"></span> first-org-2015 &mdash; 4,429</li>
+    <li><span class="sw" style="background:var(--choney)"></span> honeypot-2018 &mdash; 150</li>
+  </ul>
+  <p style="font-size:13px;color:var(--muted);margin-top:12px">
+    Sources are sampled deliberately, not proportionally &mdash; they differ in size by
+    four orders of magnitude, so proportional sampling would have erased the honeypot
+    entirely. <b>Point density is not incidence rate;</b> use the <code>count</code> field
+    on a point's card for volume.
+  </p>
+
+  <h2>Data &amp; provenance</h2>
+  <table>
+    <tr><th>File</th><th>What it is</th><th class="num">Size</th></tr>
+    <tr><td><a href="suricata_alerts_corpus.csv">suricata_alerts_corpus.csv</a></td>
+        <td>The corpus behind the map, one row per point</td><td class="num">20.0 MB</td></tr>
+    <tr><td><a href="labels.json">labels.json</a></td>
+        <td>All 204 hand-written cluster labels</td><td class="num">8.7 KB</td></tr>
+    <tr><td><a href="manifest.json">manifest.json</a></td>
+        <td>Build parameters, versions, hashes, timings</td><td class="num">2.7 KB</td></tr>
+    <tr><td>layout_coords.npy&nbsp;/&nbsp;cluster_assignments.npz</td>
+        <td><b>Pinned</b> layout and clusters &mdash; delete these and a rebuild silently
+            relabels the whole map</td><td class="num">0.5 MB</td></tr>
+  </table>
+
+  <footer>
+    Built from the
+    <a href="https://github.com/FrankHassanabad/suricata-sample-data/releases/tag/v4.0.0"
+       target="_blank" rel="noopener noreferrer">suricata-sample-data v4.0.0</a> release.
+    Rule lookups resolve against Proofpoint Emerging Threats. Map dated 2026-08-12.
+  </footer>
+
+</div>
+</body>
+</html>
