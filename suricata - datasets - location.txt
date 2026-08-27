@@ -1,0 +1,5 @@
+suricata 
+dataset location
+
+https://securitydatasets.com/consume/suricata.html
+
